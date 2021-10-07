@@ -14,13 +14,30 @@ Parameters:
     Type:  AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 Keypair
 
-  AvailabilityZone:
+  AvailabilityZone1:
     Description: On which AZ the server wil launch
     Type: String
     AllowedValues:
       - us-east-1a
       - us-east-1b
       - us-east-1c
+
+  AvailabilityZone2:
+    Description: On which AZ the server wil launch
+    Type: String
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+
+  AvailabilityZone3:
+    Description: On which AZ the server wil launch
+    Type: String
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+  
 
   InstanceTypeParameter:
     Description: Webserver EC2 instance Type
@@ -40,11 +57,35 @@ Parameters:
     ConstraintDescription: must be list of EC2 security group ids
 
 Resources:
-  EC2Instance:
+  EC2Instance1:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: 
-        Ref: AvailabilityZone
+        Ref: AvailabilityZone1
+      InstanceType:
+        Ref: InstanceTypeParameter
+      ImageId: 
+        Ref: LatestAmiId
+      SecurityGroupIds: 
+        Ref: SecurityGroupIds
+
+  EC2Instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: 
+        Ref: AvailabilityZone2
+      InstanceType:
+        Ref: InstanceTypeParameter
+      ImageId: 
+        Ref: LatestAmiId
+      SecurityGroupIds: 
+        Ref: SecurityGroupIds
+
+  EC2Instance3:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: 
+        Ref: AvailabilityZone3
       InstanceType:
         Ref: InstanceTypeParameter
       ImageId: 
