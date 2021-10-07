@@ -1,7 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  VpcId:
+    Description: VPC Id
+    Type: String
+
+  SubnetId1:
+    Description: Subnet Id where instance will create
+    Type: String
+
+  KeyName:
+    Description: Name of an Existing EC2 key pair to enable SSH access to the instance
+    Type:  AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 Keypair
+
+  AvailabilityZone:
+    Description: On which AZ the server wil launch
+    Type: String
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+
+  InstanceTypeParameter:
+    Description: Webserver EC2 instance Type
+    Type: String
+    AllowedValues:
+      - t2.micro
+      - m1.small
+      - m1.large
+
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+  SecurityGroupIds:
+    Description: Security Group That can be used to access EC2 instances
+    Type: "List<AWS::EC2::SecurityGroup::Id>"
+    ConstraintDescription: must be list of EC2 security group ids
+
 Resources:
-  MyInstance:
-   Type: AWS::EC2::Instance
-   Properties:
-      AvailabilityZone: us-east-1a
-      ImageId: ami-087c17d1fe0178315
-      InstanceType: t2.micro
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: 
+        Ref: AvailabilityZone
+      InstanceType:
+        Ref: InstanceTypeParameter
+      ImageId: 
+        Ref: LatestAmiId
+      SecurityGroupIds: 
+        Ref: SecurityGroupIds
